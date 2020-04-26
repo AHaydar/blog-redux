@@ -8,7 +8,7 @@ import {
 
 import DashboardPage from './pages/DashboardPage';
 import PostsPage from './pages/PostsPage';
-import Post from './pages/PostPage';
+import PostPage from './pages/PostPage';
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
       <Switch>
         <Route exact path="/" component={DashboardPage} />
         <Route exact path="/posts" component={PostsPage} />
-        <Route exact path="/posts/:id" component={Post} />
+        <Route exact path="/posts/:id" component={PostPage} />
         <Redirect to="/" />
       </Switch>
     </Router>
