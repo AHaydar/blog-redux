@@ -1,25 +1,29 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-
-import fetchSinglePost from '../actions/singlePostActions';
-import { fetchComments } from '../actions/commentsActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPost, postSelector } from '../slices/post';
+import { fetchComments, commentsSelector } from '../slices/comments';
 
 import { Post } from '../components/Post';
 import { Comment } from '../components/Comment';
 
-const SinglePostPage = ({
-  match,
-  dispatch,
-  post,
-  comments,
-  hasErrors,
-  loading,
-}) => {
+const PostPage = ({ match }) => {
+  const dispatch = useDispatch();
+  const loading = {
+    post: useSelector(postSelector).loading,
+    comments: useSelector(commentsSelector).loading,
+  };
+  const hasErrors = {
+    post: useSelector(postSelector).hasErrors,
+    comments: useSelector(commentsSelector).hasErrors,
+  };
+  const { post } = useSelector(postSelector);
+  const { comments } = useSelector(commentsSelector);
+
   useEffect(() => {
     const { id } = match.params;
 
     dispatch(fetchComments(id));
-    dispatch(fetchSinglePost(id));
+    dispatch(fetchPost(id));
   }, [dispatch, match]);
 
   const renderPost = () => {
@@ -47,14 +51,4 @@ const SinglePostPage = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  post: state.singlePost.post,
-  comments: state.comments.comments,
-  loading: { post: state.singlePost.loading, comments: state.comments.loading },
-  hasErrors: {
-    post: state.singlePost.hasErrors,
-    comments: state.comments.hasErrors,
-  },
-});
-
-export default connect(mapStateToProps)(SinglePostPage);
+export default PostPage;
